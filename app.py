@@ -2,7 +2,9 @@ from chalice import Chalice, Response
 
 app = Chalice(app_name='proxy')
 
-
+# USAGE - local: curl "http://127.0.0.1:8000/?url=https%3A%2F%2Fapi.coingecko.com%2Fapi%2Fv3%2Fsimple%2Fprice%3Fvs_currencies%3Dusd%26ids%3Dalgorand%2Cbinancecoin%2Cbitcoin%2Ccardano%2Cethereum%2Cpolkadot%2Csolana%2Cwrapped-bitcoin%2Cuniswap%2Cgitcoin"
+# USAGE - lambda: curl "https://mri8t8njf1.execute-api.us-east-1.amazonaws.com/api/?url=https%3A%2F%2Fapi.coingecko.com%2Fapi%2Fv3%2Fsimple%2Fprice%3Fvs_currencies%3Dusd%26ids%3Dalgorand%2Cbinancecoin%2Cbitcoin%2Ccardano%2Cethereum%2Cpolkadot%2Csolana%2Cwrapped-bitcoin%2Cuniswap%2Cgitcoin"
+# USAGE - production: curl "https://proxy.cloudmatica.com/?url=https%3A%2F%2Fapi.coingecko.com%2Fapi%2Fv3%2Fsimple%2Fprice%3Fvs_currencies%3Dusd%26ids%3Dalgorand%2Cbinancecoin%2Cbitcoin%2Ccardano%2Cethereum%2Cpolkadot%2Csolana%2Cwrapped-bitcoin%2Cuniswap%2Cgitcoin"
 @app.route('/', methods=['GET'])
 def index():
     import requests
@@ -10,6 +12,7 @@ def index():
     url = app.current_request.query_params['url']
     method = app.current_request.method
     if method == 'GET':
+        print(url)
         response = requests.get(url)
         return Response(body=response.text, status_code=response.status_code, headers={'Content-Type': response.headers['Content-Type']})
     else:
